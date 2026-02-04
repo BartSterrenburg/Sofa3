@@ -1,16 +1,18 @@
+using System.Text.Json;
+
 namespace Sofa3
 {
     class Order
     {
-        private List<MovieTicket> movieTickets = new List<MovieTicket>();
+        private List<MovieTicket> movieTickets = new();
 
         private int orderNr;
-        public Boolean isStudentOrder;
+        public bool IsStudentOrder;
 
-        public Order(int orderNr, Boolean isStudentOrder)
+        public Order(int orderNr, bool isStudentOrder)
         {
             this.orderNr = orderNr;
-            this.isStudentOrder = isStudentOrder;
+            this.IsStudentOrder = isStudentOrder;
         }
 
         public int getOrderNr()
@@ -26,13 +28,12 @@ namespace Sofa3
         public double calculatePrice()
         {
             var price = 0f;
-        }
-
+        
             for (var i = 0; i < movieTickets.Count; i++)
             {
                 var ticket = movieTickets[i];
 
-                if (isStudentOrder && i % 2 == 1)
+                if (IsStudentOrder && i % 2 == 1)
                     continue;
                 
                 if (ticket.getWeekday() && i % 2 == 1)
@@ -41,12 +42,12 @@ namespace Sofa3
                 var ticketPrice = ticket.getPrice();
 
                 if (ticket.isPremiumTicket())
-                    ticketPrice += isStudentOrder ? 2f : 3f;
+                    ticketPrice += IsStudentOrder ? 2f : 3f;
 
                 price += ticketPrice;
             }
 
-            if (!isStudentOrder && movieTickets.Count >= 6)
+            if (!IsStudentOrder && movieTickets.Count >= 6)
                 price *= 0.9f;
             
             return price;
@@ -58,7 +59,7 @@ namespace Sofa3
             if (exportFormat == TicketExportFormat.PLAINTEXT)
             {
                 Console.WriteLine($"Ordernumber: {orderNr}");
-                Console.WriteLine($"IsStudent: {isStudentOrder}");
+                Console.WriteLine($"IsStudent: {IsStudentOrder}");
 
                 foreach (MovieTicket ticket in movieTickets)
                 {
@@ -69,7 +70,7 @@ namespace Sofa3
                 var exportObject = new
                 {
                     OrderNumber = orderNr,
-                    IsStudent = isStudentOrder,
+                    IsStudent = IsStudentOrder,
                     Tickets = movieTickets.Select(t => new
                     {
                         RowNr = t.getRowNr(),
