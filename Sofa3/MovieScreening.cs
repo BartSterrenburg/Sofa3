@@ -9,12 +9,12 @@ namespace Sofa3
 {
     class MovieScreening
     {
-        private DateAndTime dateAndTime;
+        private DateTime dateTime;
         private double pricePerSeat;
 
-        public MovieScreening(DateAndTime dateAndTime, double pricePerSeat)
+        public MovieScreening(DateTime dateTime, double pricePerSeat)
         {
-            this.dateAndTime = dateAndTime;
+            this.dateTime = dateTime;
             this.pricePerSeat = pricePerSeat;
         }
 
@@ -26,7 +26,7 @@ namespace Sofa3
         override public string ToString()
         {
             // CHECK IF THIS DATEANDTIME TO STRING WORKS AS EXPECTED
-            return this.pricePerSeat + ", " + this.dateAndTime;
+            return this.pricePerSeat + ", " + this.dateTime;
         }
     }
 }
