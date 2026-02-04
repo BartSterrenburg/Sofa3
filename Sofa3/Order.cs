@@ -53,6 +53,40 @@ namespace Sofa3
             return price;
         }
 
+        public double calculatePrice2()
+        {
+            int movieTicketCount = movieTickets.Count;
+            double price = 0;
+
+            for (var i = 0; i < movieTickets.Count; i++)
+            {
+                var ticket = movieTickets[i];
+
+                if ((IsStudentOrder || ticket.getWeekday()) && i % 2 == 1)
+                {
+                    continue;
+                } else if (ticket.isPremiumTicket())
+                {
+                    if (IsStudentOrder)
+                    {
+                        price += ticket.getPrice() + 2;
+                    } else
+                    {
+                        price += ticket.getPrice() + 3;
+                    }
+                } else
+                {
+                    price += ticket.getPrice();
+                }
+
+                if (ticket.getWeekday() == false && IsStudentOrder)
+                {
+                    price += price * 0.9;
+                }
+               
+            }
+            return price;
+        }
 
         public void export(TicketExportFormat exportFormat)
         {
@@ -84,10 +118,8 @@ namespace Sofa3
                     exportObject,
                     new JsonSerializerOptions { WriteIndented = true }
                 );
-
                 Console.WriteLine(json);
             }
-
         }
     }
 }

@@ -13,13 +13,17 @@ public class Program
         var movieTicket1 = new MovieTicket(movieScreening1, 3, 1, false);
         var movieTicket2 = new MovieTicket(movieScreening1, 3, 2, false);
         var movieTicket3 = new MovieTicket(movieScreening1, 3, 3, true);
-        
+        var movieTicket4 = new MovieTicket(movieScreening1, 3, 4, true);
+        var movieTicket5 = new MovieTicket(movieScreening1, 3, 5, false);
+
         var order1 = new Order(1, true);
         
         order1.addSeatReservation(movieTicket1);
         order1.addSeatReservation(movieTicket2);
         order1.addSeatReservation(movieTicket3);
-        
+        order1.addSeatReservation(movieTicket4);
+        order1.addSeatReservation(movieTicket5);
+
         order1.export(TicketExportFormat.JSON);
         order1.export(TicketExportFormat.PLAINTEXT);
 
@@ -27,6 +31,8 @@ public class Program
         
         movie1.addScreening(movieScreening1);
         
-        Console.Write(order1.calculatePrice());
+        Console.WriteLine(order1.calculatePrice());
+        Console.WriteLine(order1.calculatePrice2());
+
     }
 }
