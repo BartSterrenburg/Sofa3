@@ -34,7 +34,7 @@
                 if (isStudentOrder && i % 2 == 1)
                     continue;
                 
-                if (ticket.getWeekday() && i % 2 == 0)
+                if (ticket.getWeekday() && i % 2 == 1)
                     continue;
 
                 var ticketPrice = ticket.getPrice();
