@@ -1,32 +1,33 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Sofa3
+﻿namespace Sofa3
 {
     class MovieScreening
     {
         private DateTime dateTime;
-        private double pricePerSeat;
+        private float pricePerSeat;
 
-        public MovieScreening(DateTime dateTime, double pricePerSeat)
+        public MovieScreening(DateTime dateTime, float pricePerSeat)
         {
             this.dateTime = dateTime;
             this.pricePerSeat = pricePerSeat;
         }
-
-        public Double getPricePerSeat()
+        
+        public float getPricePerSeat()
         {
-            return this.pricePerSeat;
+            return pricePerSeat;
         }
+
+
+        public bool isWeekday()
+        {
+            var dow = dateTime.DayOfWeek;
+            return dow >= DayOfWeek.Monday && dow <= DayOfWeek.Thursday;
+        }
+
 
         override public string ToString()
         {
             // CHECK IF THIS DATEANDTIME TO STRING WORKS AS EXPECTED
-            return this.pricePerSeat + ", " + this.dateTime;
+            return pricePerSeat + ", " + dateTime;
         }
     }
 }

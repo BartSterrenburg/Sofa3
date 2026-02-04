@@ -1,22 +1,29 @@
 ﻿// Main class
 
 using Sofa3;
-using System;
-
-using Sofa3;
-using System;
 
 public class Program
 {
     public static void Main()
     {
-        Movie movie1 = new Movie("movie1");
-        Movie movie2 = new Movie("movie2");
-        Movie movie3 = new Movie("movie3");
+        var movie1 = new Movie("movie1");
+        var movie2 = new Movie("movie2");
 
-        MovieScreening movieScreening1 =
-            new MovieScreening(DateTime.Now, 12.0);
+        var movieScreening1 =
+            new MovieScreening(DateTime.Now, 10);
+
+        var movieTicket1 = new MovieTicket(movieScreening1, 3, 1, false);
+        var movieTicket2 = new MovieTicket(movieScreening1, 3, 2, false);
+        var movieTicket3 = new MovieTicket(movieScreening1, 3, 3, true);
+
+        var order1 = new Order(1, true);
 
         movie1.addScreening(movieScreening1);
+        
+        order1.addSeatReservation(movieTicket1);
+        order1.addSeatReservation(movieTicket2);
+        order1.addSeatReservation(movieTicket3);
+
+        Console.Write(order1.calculatePrice());
     }
 }
