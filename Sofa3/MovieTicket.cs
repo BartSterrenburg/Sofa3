@@ -1,50 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿// csharp
 namespace Sofa3
 {
-    class MovieTicket
+    class MovieTicket(MovieScreening movieScreening, int rowNr, int seatNr, bool isPremium)
     {
-        private MovieScreening movieScreening;
+        private readonly MovieScreening _movieScreening = movieScreening;
+        private readonly int _rowNr = rowNr;
+        private readonly int _seatNr = seatNr;
+        private readonly bool _isPremium = isPremium;
 
-        private int rowNr;
-        private int seatNr;
-        private Boolean isPremium;
-
-        public MovieTicket(int rowNr, int seatNr, Boolean isPremium)
+        public bool isPremiumTicket()
         {
-            this.rowNr = rowNr;
-            this.seatNr = seatNr;
-            this.isPremium = isPremium;
-        }
-
-        public Boolean isPremiumTicket()
-        {
-            return this.isPremium;
+            return _isPremium;
         }
 
         public int getRowNr()
         {
-            return this.rowNr;
+            return _rowNr;
         }
 
         public int getSeatNr()
         {
-            return this.seatNr;
+            return _seatNr;
         }
 
-
-        public Double getPrice()
+        public float getPrice()
         {
-            return 1; // TO BE IMPLEMENTED
+            return _movieScreening.getPricePerSeat();
+        }
+
+        public bool getWeekday()
+        {
+            return _movieScreening.isWeekday();
         }
 
         public override string ToString()
         {
-            return "The reservation for row " + this.rowNr + " and seatnumber " + this.seatNr + " was succesfully. Premium: " + this.isPremium + "!";
+            return "The reservation for row " + _rowNr + " and seatnumber " + _seatNr + " was succesfully. Premium: " + _isPremium + "!";
         }
     }
 }
