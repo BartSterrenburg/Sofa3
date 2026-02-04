@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Sofa3
 {
     class Order
     {
-        private List<MovieTicket> movieTickets = new List<MovieTicket>();
+        public List<MovieTicket> movieTickets = new List<MovieTicket>();
 
         private int orderNr;
         public Boolean isStudentOrder;
@@ -26,7 +27,7 @@ namespace Sofa3
 
         public void addSeatReservation(MovieTicket ticket)
         {
-
+            movieTickets.Add(ticket);
         }
 
         public Double calculatePrice()
@@ -36,7 +37,38 @@ namespace Sofa3
 
         public void export(TicketExportFormat exportFormat)
         {
-            //TO BE IMPLEMENTED
+            if (exportFormat == TicketExportFormat.PLAINTEXT)
+            {
+                Console.WriteLine($"Ordernumber: {orderNr}");
+                Console.WriteLine($"IsStudent: {isStudentOrder}");
+
+                foreach (MovieTicket ticket in movieTickets)
+                {
+                    Console.WriteLine(ticket);
+                }
+            } else if (exportFormat == TicketExportFormat.JSON)
+            {
+                var exportObject = new
+                {
+                    OrderNumber = orderNr,
+                    IsStudent = isStudentOrder,
+                    Tickets = movieTickets.Select(t => new
+                    {
+                        RowNr = t.getRowNr(),
+                        SeatNr = t.getSeatNr(),
+                        IsPremium = t.isPremiumTicket(),
+                        Price = t.getPrice()
+                    })
+                };
+
+                string json = JsonSerializer.Serialize(
+                    exportObject,
+                    new JsonSerializerOptions { WriteIndented = true }
+                );
+
+                Console.WriteLine(json);
+            }
+
         }
     }
 }
