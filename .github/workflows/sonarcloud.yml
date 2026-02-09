@@ -40,7 +40,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
         args: >
-          -Dsonar.projectKey=bartsterreburg_sofa3
-          -Dsonar.organization=bartsterreburg
+          -Dsonar.projectKey=BartSterrenburg_Sofa3
+          -Dsonar.organization=bartsterrenburg
           -Dsonar.cs.opencover.reportsPaths=TestResults/**/coverage.opencover.xml
           -Dsonar.cs.vstest.reportsPaths=TestResults/*.trx
