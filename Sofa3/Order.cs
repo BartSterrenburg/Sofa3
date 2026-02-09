@@ -81,12 +81,9 @@ namespace Sofa3
 
                 if (ticket.getWeekday() == false && IsStudentOrder)
                 {
-                    price = price * 0.9;
+                    price *= 0.9;
                 }
-
             }
-
-
             return price;
         }
 
