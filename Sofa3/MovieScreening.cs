@@ -1,9 +1,9 @@
 ﻿namespace Sofa3
 {
-    class MovieScreening
+    public class MovieScreening
     {
         private DateTime dateTime;
-        private float pricePerSeat;
+        public double pricePerSeat;
 
         public MovieScreening(DateTime dateTime, float pricePerSeat)
         {
@@ -11,9 +11,14 @@
             this.pricePerSeat = pricePerSeat;
         }
         
-        public float getPricePerSeat()
+        public double getPricePerSeat()
         {
             return pricePerSeat;
+        }
+
+        public void setPrice(double pricePerSeat)
+        {
+            this.pricePerSeat = pricePerSeat;
         }
 
 

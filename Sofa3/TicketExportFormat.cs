@@ -1,6 +1,6 @@
 ﻿namespace Sofa3
 {
-    enum TicketExportFormat
+    public enum TicketExportFormat
     {
         PLAINTEXT = 0,
         JSON = 1

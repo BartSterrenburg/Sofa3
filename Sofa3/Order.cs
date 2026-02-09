@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace Sofa3
 {
-    class Order
+    public class Order
     {
         private List<MovieTicket> movieTickets = new();
 
@@ -27,7 +27,7 @@ namespace Sofa3
 
         public double calculatePrice()
         {
-            var price = 0f;
+            double price = 0;
         
             for (var i = 0; i < movieTickets.Count; i++)
             {
@@ -48,7 +48,7 @@ namespace Sofa3
             }
 
             if (!IsStudentOrder && movieTickets.Count >= 6)
-                price *= 0.9f;
+                price *= 0.9;
             
             return price;
         }
@@ -81,10 +81,12 @@ namespace Sofa3
 
                 if (ticket.getWeekday() == false && IsStudentOrder)
                 {
-                    price += price * 0.9;
+                    price = price * 0.9;
                 }
-               
+
             }
+
+
             return price;
         }
 
@@ -120,6 +122,11 @@ namespace Sofa3
                 );
                 Console.WriteLine(json);
             }
+        }
+
+        public void addSeatReservation(object value)
+        {
+            throw new NotImplementedException();
         }
     }
 }

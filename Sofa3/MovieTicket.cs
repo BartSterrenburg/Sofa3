@@ -1,7 +1,7 @@
 ﻿// csharp
 namespace Sofa3
 {
-    class MovieTicket(MovieScreening movieScreening, int rowNr, int seatNr, bool isPremium)
+    public class MovieTicket(MovieScreening movieScreening, int rowNr, int seatNr, bool isPremium)
     {
         private readonly MovieScreening _movieScreening = movieScreening;
         private readonly int _rowNr = rowNr;
@@ -23,14 +23,24 @@ namespace Sofa3
             return _seatNr;
         }
 
-        public float getPrice()
+        public double getPrice()
         {
             return _movieScreening.getPricePerSeat();
+        }
+
+        public void setPrice(double price)
+        {
+            _movieScreening.setPrice(price);
         }
 
         public bool getWeekday()
         {
             return _movieScreening.isWeekday();
+        }
+
+        public void setWeekday(bool isWeekday)
+        {
+
         }
 
         public override string ToString()
