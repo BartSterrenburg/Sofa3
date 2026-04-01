@@ -12,6 +12,8 @@ namespace Sofa3.Domain
     {
         public Guid SprintId { get; private set; }
         public string Name { get; private set; }
+        public DateOnly StartDate { get; private set; }
+        public DateOnly EndDate { get; private set; }
 
         private readonly DomainEventPublisher _eventPublisher;
 

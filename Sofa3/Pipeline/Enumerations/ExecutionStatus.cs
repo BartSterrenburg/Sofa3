@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Sofa3.Domain.Pipeline.Enumerations
+{
+    public enum ExecutionStatus
+    {
+        PENDING,
+        RUNNING,
+        SUCCEEDED,
+        FAILED,
+        SKIPPED,
+        CANCELLED
+    }
+}

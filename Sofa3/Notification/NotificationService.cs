@@ -18,6 +18,6 @@ namespace Sofa3.Domain.Notification
         public void Send(Notification notification)
         {
             _notificationChannel.Send(notification);
-        }
+        }  
     }
 }
