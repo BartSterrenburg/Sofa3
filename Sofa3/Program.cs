@@ -6,11 +6,38 @@ using Sofa3.Domain.Notification;
 using Sofa3.Domain;
 using Sofa3.Domain.Pipeline;
 using Sofa3.Domain.Pipeline.Enumerations;
+using Sofa3.Domain.Scm.Providers;
+using Sofa3.Domain.Scm;
 
 
 public class Program
 {
-    static void Main(string[] args)
+    public static void Main(string[] args)
+    {
+        TestScm();
+    }
+
+    public static void TestScm()
+    {
+        IScmProvider provider = new GithubProvider();
+
+        var repo = provider.GetRepository("https://github.com/BartSterrenburg/Sofa3.git");
+        var branches = provider.GetBranches(repo);
+
+        Console.WriteLine($"Repo: {repo.Name}");
+
+        foreach (var branch in branches)
+        {
+            Console.WriteLine($"Branch: {branch.BranchName}");
+
+            var commits = provider.GetCommits(branch);
+            foreach (var commit in commits)
+            {
+                Console.WriteLine($"  - {commit.CommitHash} | {commit.Message}");
+            }
+        }
+    }
+    public static void TestPipeline()
     {
         // 1. Channels opzetten
         var emailChannel = new EmailChannel();
@@ -112,35 +139,37 @@ public class Program
         Console.WriteLine("Demo afgerond.");
         Console.ReadLine();
     }
+    public static void TestNotificationService()
+    {
+        // 1. Channels opzetten
+        var emailChannel = new EmailChannel();
+        var smsChannel = new SmsChannel();
+        var slackChannel = new SlackChannel();
+
+        // 2. MultiChannelNotifier configureren (Composite)
+        var multiChannelNotifier = new MultiChannelNotifier();
+        multiChannelNotifier.AddChannel(emailChannel);
+        multiChannelNotifier.AddChannel(smsChannel);
+        multiChannelNotifier.AddChannel(slackChannel);
+
+        // 3. NotificationService (Facade)
+        var notificationService = new NotificationService(multiChannelNotifier);
+
+        // 4. Observer maken
+        var scrumObserver = new ScrumMasterNotificationObserver(notificationService);
+
+        // 5. Publisher maken en observer registreren
+        var publisher = new DomainEventPublisher();
+        publisher.Subscribe(scrumObserver);
+
+        // 6. Sprint maken (inject publisher)
+        var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", publisher);
+
+        // 7. Actie uitvoeren → triggert alles
+        sprint.Release();
+
+        Console.ReadLine();
+    }
+
 }
 
-
-
-//// 1. Channels opzetten
-//var emailChannel = new EmailChannel();
-//var smsChannel = new SmsChannel();
-//var slackChannel = new SlackChannel();
-
-//// 2. MultiChannelNotifier configureren (Composite)
-//var multiChannelNotifier = new MultiChannelNotifier();
-//multiChannelNotifier.AddChannel(emailChannel);
-//multiChannelNotifier.AddChannel(smsChannel);
-//multiChannelNotifier.AddChannel(slackChannel);
-
-//// 3. NotificationService (Facade)
-//var notificationService = new NotificationService(multiChannelNotifier);
-
-//// 4. Observer maken
-//var scrumObserver = new ScrumMasterNotificationObserver(notificationService);
-
-//// 5. Publisher maken en observer registreren
-//var publisher = new DomainEventPublisher();
-//publisher.Subscribe(scrumObserver);
-
-//// 6. Sprint maken (inject publisher)
-//var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", publisher);
-
-//// 7. Actie uitvoeren → triggert alles
-//sprint.Release();
-
-//Console.ReadLine();
