@@ -16,6 +16,8 @@ public class Program
     public static void Main(string[] args)
     {
         TestScm();
+        TestPipeline();
+        TestNotificationService();
     }
 
     public static void TestScm()

@@ -1,4 +1,4 @@
-using Sofa3.Domain;
+using Sofa3.Domain.Core;
 
 namespace Sofa3.Domain.SprintLifecycle.States;
 

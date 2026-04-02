@@ -1,3 +1,5 @@
+using Sofa3.Domain.Core;
+
 namespace Sofa3.Domain.SprintReport;
 
 public sealed class SprintReportService
