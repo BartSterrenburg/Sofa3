@@ -8,6 +8,7 @@ using Sofa3.Domain.Pipeline;
 using Sofa3.Domain.Pipeline.Enumerations;
 using Sofa3.Domain.Scm.Providers;
 using Sofa3.Domain.Scm;
+using Sofa3.Domain.Core;
 
 
 public class Program
@@ -170,6 +171,5 @@ public class Program
 
         Console.ReadLine();
     }
-
 }
 
