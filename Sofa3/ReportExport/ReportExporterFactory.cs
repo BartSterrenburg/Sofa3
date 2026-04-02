@@ -1,10 +1,10 @@
-using System;
 
-namespace Sofa3.Domain.ReportExport;
+
+using Sofa3.Domain.ReportExport;
 
 public sealed class ReportExporterFactory
 {
-    public ReportExporter Create(ExportFormat format)
+    public IReportExporter Create(ExportFormat format)
     {
         return format switch
         {

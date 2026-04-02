@@ -1,8 +1,8 @@
 using Sofa3.Domain.Core;
 
-namespace Sofa3.Domain.SprintLifecycle.States;
+namespace Sofa3.Domain.Core.States;
 
-public abstract class SprintStateBase : SprintState
+public abstract class SprintStateBase : ISprintState
 {
     public abstract string Name { get; }
 

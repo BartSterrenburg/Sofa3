@@ -3,7 +3,7 @@ using Sofa3.Domain.Core;
 
 namespace Sofa3.Domain.SprintReport;
 
-public sealed class BrandedReportLayoutStrategy : ReportLayoutStrategy
+public sealed class BrandedReportLayoutStrategy : IReportLayoutStrategy
 {
     private const string BrandName = "Sofa3";
 

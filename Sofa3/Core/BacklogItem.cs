@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Sofa3.Domain.Core.BacklogItemStates;
+using Sofa3.Domain.Notification.DomainEvents;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +8,14 @@ using System.Threading.Tasks;
 
 namespace Sofa3.Domain.Core
 {
-    public class BacklogItem
+    public class BacklogItem : AggregateRoot
     {
         public Guid BacklogItemId { get; private set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
         public int StoryPoints { get; private set; }
         public bool IsLocked { get; private set; }
+        public User? Owner { get; private set; }
 
         private readonly List<Activity> _activities = new();
         private readonly List<DiscussionThread> _discussionThreads = new();
@@ -32,9 +35,9 @@ namespace Sofa3.Domain.Core
             State = initialState;
         }
 
-        public void AssignDeveloper(object user)
+        public void AssignDeveloper(User user)
         {
-            // In UML staat User, maar die klasse staat niet in de foto.
+            this.Owner = user;
         }
 
         public void AddActivity(Activity activity)
@@ -54,6 +57,10 @@ namespace Sofa3.Domain.Core
 
         public void MoveTo(IBacklogItemState state)
         {
+            if (state is ToDoState)
+            {
+                AddDomainEvent(new BacklogItemReturnedToToDoEvent(this.BacklogItemId));
+            }
             State = state;
         }
     }

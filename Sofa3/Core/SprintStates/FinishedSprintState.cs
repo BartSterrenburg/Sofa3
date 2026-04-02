@@ -1,10 +1,9 @@
-using Sofa3.Domain.Core;
 
-namespace Sofa3.Domain.SprintLifecycle.States;
+namespace Sofa3.Domain.Core.States;
 
-public sealed class FailedSprintState : SprintStateBase
+public sealed class FinishedSprintState : SprintStateBase
 {
-    public override string Name => "Failed";
+    public override string Name => "Finished";
 
     public override void StartRelease(Sprint sprint)
     {

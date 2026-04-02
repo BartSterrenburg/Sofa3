@@ -1,6 +1,6 @@
 using Sofa3.Domain.Core;
+using Sofa3.Domain.Core.States;
 
-namespace Sofa3.Domain.SprintLifecycle.States;
 
 public sealed class ConceptSprintState : SprintStateBase
 {

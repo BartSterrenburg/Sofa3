@@ -1,10 +1,11 @@
+
 using Sofa3.Domain.Core;
 
 namespace Sofa3.Domain.SprintReport;
 
 public sealed class SprintReportService
 {
-    public SprintReport GenerateFor(Sprint sprint, ReportLayoutStrategy layout)
+    public SprintReport GenerateFor(Sprint sprint, IReportLayoutStrategy layout)
     {
         ArgumentNullException.ThrowIfNull(sprint);
         ArgumentNullException.ThrowIfNull(layout);

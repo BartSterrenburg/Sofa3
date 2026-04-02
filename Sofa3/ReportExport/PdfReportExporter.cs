@@ -7,7 +7,7 @@ using SprintReportModel = global::Sofa3.Domain.SprintReport.SprintReport;
 
 namespace Sofa3.Domain.ReportExport;
 
-public sealed class PdfReportExporter : ReportExporter
+public sealed class PdfReportExporter : IReportExporter
 {
     public ExportedReport Export(SprintReportModel report)
     {

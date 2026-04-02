@@ -9,7 +9,7 @@ using SprintReportModel = global::Sofa3.Domain.SprintReport.SprintReport;
 
 namespace Sofa3.Domain.ReportExport;
 
-public sealed class PngReportExporter : ReportExporter
+public sealed class PngReportExporter : IReportExporter
 {
     private static readonly byte[] PngSignature = [137, 80, 78, 71, 13, 10, 26, 10];
 

@@ -1,6 +1,4 @@
-using Sofa3.Domain.Core;
-
-namespace Sofa3.Domain.SprintLifecycle.States;
+namespace Sofa3.Domain.Core.States;
 
 public sealed class CancelledSprintState : SprintStateBase
 {

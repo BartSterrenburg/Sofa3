@@ -12,6 +12,7 @@ namespace Sofa3.Domain.Core
         public string Name { get; private set; }
         public string Description { get; private set; }
         public DateTime CreatedAt { get; }
+        public List<ProjectMembership> Members { get; private set; } = new();
 
         public Project(string name, string description)
         {
@@ -24,13 +25,13 @@ namespace Sofa3.Domain.Core
             CreatedAt = DateTime.UtcNow;
         }
 
-        //public void AddMember(User user, ProjectRole role)
-        //{
-        //    if (user == null)
-        //        throw new ArgumentNullException(nameof(user));
+        public void AddMember(User user, ProjectRole role)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
 
-        //    // Domeinlogica voor koppelen van lid aan project komt hier.
-        //}
+            Members.Add(new ProjectMembership(user.UserId, role));
+        }
 
         public void CreateBacklogItem(string title, string description)
         {

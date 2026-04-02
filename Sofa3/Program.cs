@@ -9,15 +9,45 @@ using Sofa3.Domain.Pipeline.Enumerations;
 using Sofa3.Domain.Scm.Providers;
 using Sofa3.Domain.Scm;
 using Sofa3.Domain.Core;
+using Sofa3.Domain.Core.BacklogItemStates;
 
 
 public class Program
 {
     public static void Main(string[] args)
     {
-        TestScm();
-        TestPipeline();
-        TestNotificationService();
+
+        // 1. Channels opzetten
+        var emailChannel = new EmailChannel();
+        var smsChannel = new SmsChannel();
+
+        // 2. MultiChannelNotifier configureren (Composite)
+        var multiChannelNotifier = new MultiChannelNotifier();
+        multiChannelNotifier.AddChannel(emailChannel);
+        multiChannelNotifier.AddChannel(smsChannel);
+
+        // 3. NotificationService (Facade)
+        var notificationService = new NotificationService(multiChannelNotifier);
+
+        var publisher = new DomainEventPublisher();
+
+        var scrumObserver = new ScrumMasterNotificationObserver(notificationService);
+
+        // voorbeeld observer subscriben
+        publisher.Subscribe(scrumObserver);
+
+
+        DiscussionThread discussion = new DiscussionThread("Discussie over API design");
+        discussion.AddMessage(new Message(
+            "Ik denk dat we REST moeten gebruiken."));
+
+        foreach (var domainEvent in discussion.DomainEvents)
+        {
+            publisher.Publish(domainEvent);
+        }
+
+        discussion.ClearDomainEvents();
+
     }
 
     public static void TestScm()
@@ -64,7 +94,7 @@ public class Program
         publisher.Subscribe(scrumObserver);
 
         // 6. Sprint maken (inject publisher)
-        var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", publisher);
+        var sprint = new Sprint(Guid.NewGuid(), "Sprint 1");
 
         // Project aanmaken
         var project = new Project(
@@ -166,7 +196,7 @@ public class Program
         publisher.Subscribe(scrumObserver);
 
         // 6. Sprint maken (inject publisher)
-        var sprint = new Sprint(Guid.NewGuid(), "Sprint 1", publisher);
+        var sprint = new Sprint(Guid.NewGuid(), "Sprint 1");
 
         // 7. Actie uitvoeren → triggert alles
         sprint.Release();

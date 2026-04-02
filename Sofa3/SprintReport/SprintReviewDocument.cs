@@ -1,4 +1,4 @@
-namespace Sofa3.Domain.SprintReview;
+namespace Sofa3.Domain.SprintReport;
 
 public sealed class SprintReviewDocument
 {

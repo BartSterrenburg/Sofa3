@@ -27,6 +27,25 @@ namespace Sofa3.Domain.Notification.NotificationObservers
 
                 _notificationService.Send(notification);
             }
+
+            if (domainEvent is BacklogItemReturnedToToDoEvent backlogItemMovedEvent)
+            {
+                var notification = new Notification(
+                    "Backlog item moved",
+                    $"Backlog item with id {backlogItemMovedEvent.BacklogItemId} has been moved to {backlogItemMovedEvent.EventType}."
+                );
+                _notificationService.Send(notification);
+            }
+
+            if (domainEvent is DiscussionMessageAddedEvent discussionMessageAddedEvent)
+            {
+                var notification = new Notification(
+                    "New discussion message",
+                    $"A new message has been added to the discussion of backlog item with id .. {discussionMessageAddedEvent.Message}."
+                );
+                _notificationService.Send(notification);
+            }
         }
     }
 }
+

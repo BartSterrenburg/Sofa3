@@ -3,7 +3,7 @@ using Sofa3.Domain.Core;
 
 namespace Sofa3.Domain.SprintReport;
 
-public sealed class DefaultReportLayoutStrategy : ReportLayoutStrategy
+public sealed class DefaultReportLayoutStrategy : IReportLayoutStrategy
 {
     public string Name => "Default";
 

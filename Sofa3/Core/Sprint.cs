@@ -1,29 +1,27 @@
 ﻿using Sofa3.Domain.Notification.DomainEvents;
 using Sofa3.Domain.Notification;
-using Sofa3.Domain.SprintLifecycle.States;
-using Sofa3.Domain.SprintLifecycle;
-using Sofa3.Domain.SprintReview;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sofa3.Domain.Core.States;
+using Sofa3.Domain.SprintReport;
 
 namespace Sofa3.Domain.Core
 {
-    public class Sprint
+    public class Sprint : AggregateRoot
     {
-        private readonly DomainEventPublisher _eventPublisher;
         private readonly List<SprintReviewDocument> _reviewDocuments = new();
 
         public Guid SprintId { get; private set; }
         public string Name { get; private set; }
         public DateOnly StartDate { get; private set; }
         public DateOnly EndDate { get; private set; }
-        public SprintState CurrentState { get; private set; }
-        public IReadOnlyCollection<SprintReviewDocument> ReviewDocuments => _reviewDocuments.AsReadOnly();
+        public ISprintState CurrentState { get; private set; }
 
-        public Sprint(Guid sprintId, string name, DateOnly startDate, DateOnly endDate, DomainEventPublisher eventPublisher)
+
+        public Sprint(Guid sprintId, string name, DateOnly startDate, DateOnly endDate)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -39,35 +37,26 @@ namespace Sofa3.Domain.Core
             Name = name;
             StartDate = startDate;
             EndDate = endDate;
-            _eventPublisher = eventPublisher ?? throw new ArgumentNullException(nameof(eventPublisher));
             CurrentState = new ConceptSprintState();
         }
 
-        public Sprint(Guid sprintId, string name, DomainEventPublisher eventPublisher)
+        public Sprint(Guid sprintId, string name)
             : this(
                 sprintId,
                 name,
                 DateOnly.FromDateTime(DateTime.UtcNow),
-                DateOnly.FromDateTime(DateTime.UtcNow.AddDays(14)),
-                eventPublisher)
+                DateOnly.FromDateTime(DateTime.UtcNow.AddDays(14)))
         {
         }
 
-        public void MoveTo(SprintState state)
+        public void MoveTo(ISprintState state)
         {
             CurrentState = state ?? throw new ArgumentNullException(nameof(state));
         }
 
-        public void moveTo(SprintState state) => MoveTo(state);
-
         public void Start() => CurrentState.Start(this);
-        public void start() => Start();
-
         public void Finish() => CurrentState.Finish(this);
-        public void finish() => Finish();
-
         public void StartRelease() => CurrentState.StartRelease(this);
-        public void startRelease() => StartRelease();
 
         public void ReleaseSucceeded()
         {
@@ -75,19 +64,13 @@ namespace Sofa3.Domain.Core
 
             if (CurrentState is ReleasedSprintState)
             {
-                _eventPublisher.Publish(new SprintReleasedEvent(SprintId));
+                AddDomainEvent(new SprintReleasedEvent(SprintId));
             }
         }
 
-        public void releaseSucceeded() => ReleaseSucceeded();
-
         public void ReleaseFailed() => CurrentState.ReleaseFailed(this);
-        public void releaseFailed() => ReleaseFailed();
-
         public void Close() => CurrentState.Close(this);
-        public void close() => Close();
 
-        // Backward-compatible convenience flow used by existing demo code.
         public void Release()
         {
             if (CurrentState is ConceptSprintState)

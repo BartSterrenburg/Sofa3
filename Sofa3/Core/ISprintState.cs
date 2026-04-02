@@ -1,8 +1,6 @@
-using Sofa3.Domain.Core;
+namespace Sofa3.Domain.Core;
 
-namespace Sofa3.Domain.SprintLifecycle;
-
-public interface SprintState
+public interface ISprintState
 {
     string Name { get; }
     void Start(Sprint sprint);

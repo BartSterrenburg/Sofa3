@@ -3,7 +3,7 @@ using Sofa3.Domain.Core;
 
 namespace Sofa3.Domain.SprintReport;
 
-public interface ReportLayoutStrategy
+public interface IReportLayoutStrategy
 {
     string Name { get; }
 

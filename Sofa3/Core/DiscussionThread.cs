@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sofa3.Domain.Notification.DomainEvents;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sofa3.Domain.Core
 {
-    public class DiscussionThread
+    public class DiscussionThread : AggregateRoot
     {
         public Guid ThreadId { get; private set; }
         public string Subject { get; private set; }
@@ -31,6 +32,7 @@ namespace Sofa3.Domain.Core
                 throw new ArgumentNullException(nameof(message));
 
             _messages.Add(message);
+            AddDomainEvent(new DiscussionMessageAddedEvent(message.Content));
         }
 
         public void CloseThread()
