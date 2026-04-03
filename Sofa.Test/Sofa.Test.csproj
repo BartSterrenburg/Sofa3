@@ -28,6 +28,8 @@
 
     <ItemGroup>
       <Folder Include="Core.Test\" />
+      <Folder Include="ReportExport.Test\" />
+      <Folder Include="SprintReport.Test\" />
     </ItemGroup>
 
 </Project>
