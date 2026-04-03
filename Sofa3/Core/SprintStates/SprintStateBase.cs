@@ -1,7 +1,5 @@
-using Sofa3.Domain.Core;
 
-namespace Sofa3.Domain.Core.States;
-
+namespace Sofa3.Domain.Core.SprintStates;
 public abstract class SprintStateBase : ISprintState
 {
     public abstract string Name { get; }

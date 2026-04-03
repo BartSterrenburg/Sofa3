@@ -1,6 +1,7 @@
 
-namespace Sofa3.Domain.Core.States;
+using Sofa3.Domain.Core.States;
 
+namespace Sofa3.Domain.Core.SprintStates;
 public sealed class FailedSprintState : SprintStateBase
 {
     public override string Name => "Failed";

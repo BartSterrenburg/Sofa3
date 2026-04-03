@@ -1,5 +1,7 @@
 
-namespace Sofa3.Domain.Core.States;
+using Sofa3.Domain.Core.States;
+
+namespace Sofa3.Domain.Core.SprintStates;
 
 public sealed class ReleasedSprintState : SprintStateBase
 {
