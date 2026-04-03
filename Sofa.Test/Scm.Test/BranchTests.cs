@@ -35,6 +35,7 @@ public class BranchTests
 
         Assert.Multiple(() =>
         {
+            Assert.That(exception, Is.Not.Null);
             Assert.That(exception!.ParamName, Is.EqualTo("branchName"));
             Assert.That(exception.Message, Does.StartWith("Branch name is required."));
         });
@@ -47,6 +48,7 @@ public class BranchTests
 
         Assert.Multiple(() =>
         {
+            Assert.That(exception, Is.Not.Null);
             Assert.That(exception!.ParamName, Is.EqualTo("branchName"));
             Assert.That(exception.Message, Does.StartWith("Branch name is required."));
         });
@@ -59,6 +61,7 @@ public class BranchTests
 
         Assert.Multiple(() =>
         {
+            Assert.That(exception, Is.Not.Null);
             Assert.That(exception!.ParamName, Is.EqualTo("branchName"));
             Assert.That(exception.Message, Does.StartWith("Branch name is required."));
         });

@@ -11,10 +11,13 @@ public class CommitTests
 
         var commit = new Commit("abc123", "Initial commit", "Bart", committedAt);
 
-        Assert.That(commit.CommitHash, Is.EqualTo("abc123"));
-        Assert.That(commit.Message, Is.EqualTo("Initial commit"));
-        Assert.That(commit.AuthorName, Is.EqualTo("Bart"));
-        Assert.That(commit.CommittedAt, Is.EqualTo(committedAt));
+        Assert.Multiple(() =>
+        {
+            Assert.That(commit.CommitHash, Is.EqualTo("abc123"));
+            Assert.That(commit.Message, Is.EqualTo("Initial commit"));
+            Assert.That(commit.AuthorName, Is.EqualTo("Bart"));
+            Assert.That(commit.CommittedAt, Is.EqualTo(committedAt));
+        });
     }
 
     [Test]
@@ -24,7 +27,10 @@ public class CommitTests
 
         var commit = new Commit("abc123", null!, "Bart", committedAt);
 
-        Assert.That(commit.Message, Is.EqualTo(string.Empty));
+        Assert.Multiple(() =>
+        {
+            Assert.That(commit.Message, Is.EqualTo(string.Empty));
+        });
     }
 
     [Test]
@@ -34,7 +40,10 @@ public class CommitTests
 
         var commit = new Commit("abc123", "Bugfix", null!, committedAt);
 
-        Assert.That(commit.AuthorName, Is.EqualTo("unknown"));
+        Assert.Multiple(() =>
+        {
+            Assert.That(commit.AuthorName, Is.EqualTo("unknown"));
+        });
     }
 
     [Test]
@@ -43,8 +52,12 @@ public class CommitTests
         var exception = Assert.Throws<ArgumentException>(() =>
             new Commit("", "Bugfix", "Bart", DateTime.UtcNow));
 
-        Assert.That(exception!.ParamName, Is.EqualTo("commitHash"));
-        Assert.That(exception.Message, Does.StartWith("Commit hash is required."));
+        Assert.Multiple(() =>
+        {
+            Assert.That(exception, Is.Not.Null);
+            Assert.That(exception!.ParamName, Is.EqualTo("commitHash"));
+            Assert.That(exception.Message, Does.StartWith("Commit hash is required."));
+        });
     }
 
     [Test]
@@ -53,8 +66,12 @@ public class CommitTests
         var exception = Assert.Throws<ArgumentException>(() =>
             new Commit("   ", "Bugfix", "Bart", DateTime.UtcNow));
 
-        Assert.That(exception!.ParamName, Is.EqualTo("commitHash"));
-        Assert.That(exception.Message, Does.StartWith("Commit hash is required."));
+        Assert.Multiple(() =>
+        {
+            Assert.That(exception, Is.Not.Null);
+            Assert.That(exception!.ParamName, Is.EqualTo("commitHash"));
+            Assert.That(exception.Message, Does.StartWith("Commit hash is required."));
+        });
     }
 
     [Test]
@@ -63,7 +80,11 @@ public class CommitTests
         var exception = Assert.Throws<ArgumentException>(() =>
             new Commit(null!, "Bugfix", "Bart", DateTime.UtcNow));
 
-        Assert.That(exception!.ParamName, Is.EqualTo("commitHash"));
-        Assert.That(exception.Message, Does.StartWith("Commit hash is required."));
+        Assert.Multiple(() =>
+        {
+            Assert.That(exception, Is.Not.Null);
+            Assert.That(exception!.ParamName, Is.EqualTo("commitHash"));
+            Assert.That(exception.Message, Does.StartWith("Commit hash is required."));
+        });
     }
 }

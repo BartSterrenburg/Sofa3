@@ -1,9 +1,5 @@
 ﻿using Sofa3.Domain.Scm;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestProject1.Scm.Test
 {
@@ -14,10 +10,13 @@ namespace TestProject1.Scm.Test
         {
             var repo = new ScmRepository("Repo", "https://github.com/test/repo.git", "main");
 
-            Assert.That(repo.RepositoryId, Is.Not.EqualTo(Guid.Empty));
-            Assert.That(repo.Name, Is.EqualTo("Repo"));
-            Assert.That(repo.RemoteUrl, Is.EqualTo("https://github.com/test/repo.git"));
-            Assert.That(repo.DefaultBranchName, Is.EqualTo("main"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(repo.RepositoryId, Is.Not.EqualTo(Guid.Empty));
+                Assert.That(repo.Name, Is.EqualTo("Repo"));
+                Assert.That(repo.RemoteUrl, Is.EqualTo("https://github.com/test/repo.git"));
+                Assert.That(repo.DefaultBranchName, Is.EqualTo("main"));
+            });
         }
 
         [Test]
@@ -26,8 +25,12 @@ namespace TestProject1.Scm.Test
             var ex = Assert.Throws<ArgumentException>(() =>
                 new ScmRepository("", "https://github.com/test/repo.git", "main"));
 
-            Assert.That(ex!.ParamName, Is.EqualTo("name"));
-            Assert.That(ex.Message, Does.StartWith("Repository name is required."));
+            Assert.Multiple(() =>
+            {
+                Assert.That(ex, Is.Not.Null);
+                Assert.That(ex!.ParamName, Is.EqualTo("name"));
+                Assert.That(ex.Message, Does.StartWith("Repository name is required."));
+            });
         }
 
         [Test]
@@ -36,8 +39,12 @@ namespace TestProject1.Scm.Test
             var ex = Assert.Throws<ArgumentException>(() =>
                 new ScmRepository("Repo", "   ", "main"));
 
-            Assert.That(ex!.ParamName, Is.EqualTo("remoteUrl"));
-            Assert.That(ex.Message, Does.StartWith("Remote URL is required."));
+            Assert.Multiple(() =>
+            {
+                Assert.That(ex, Is.Not.Null);
+                Assert.That(ex!.ParamName, Is.EqualTo("remoteUrl"));
+                Assert.That(ex.Message, Does.StartWith("Remote URL is required."));
+            });
         }
 
         [Test]
@@ -47,8 +54,11 @@ namespace TestProject1.Scm.Test
 
             var branch = repo.LinkBranch("main");
 
-            Assert.That(branch.BranchName, Is.EqualTo("main"));
-            Assert.That(branch.IsMain, Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(branch.BranchName, Is.EqualTo("main"));
+                Assert.That(branch.IsMain, Is.True);
+            });
         }
 
         [Test]
@@ -58,8 +68,11 @@ namespace TestProject1.Scm.Test
 
             var branch = repo.LinkBranch("feature/login");
 
-            Assert.That(branch.BranchName, Is.EqualTo("feature/login"));
-            Assert.That(branch.IsMain, Is.False);
+            Assert.Multiple(() =>
+            {
+                Assert.That(branch.BranchName, Is.EqualTo("feature/login"));
+                Assert.That(branch.IsMain, Is.False);
+            });
         }
 
         [Test]
@@ -70,8 +83,12 @@ namespace TestProject1.Scm.Test
             var ex = Assert.Throws<ArgumentException>(() =>
                 repo.LinkBranch(""));
 
-            Assert.That(ex!.ParamName, Is.EqualTo("branchName"));
-            Assert.That(ex.Message, Does.StartWith("Branch name is required."));
+            Assert.Multiple(() =>
+            {
+                Assert.That(ex, Is.Not.Null);
+                Assert.That(ex!.ParamName, Is.EqualTo("branchName"));
+                Assert.That(ex.Message, Does.StartWith("Branch name is required."));
+            });
         }
 
         [Test]
@@ -79,10 +96,13 @@ namespace TestProject1.Scm.Test
         {
             var commit = ScmRepository.LinkCommit("abc123");
 
-            Assert.That(commit.CommitHash, Is.EqualTo("abc123"));
-            Assert.That(commit.Message, Is.EqualTo("Linked commit"));
-            Assert.That(commit.AuthorName, Is.EqualTo("system"));
-            Assert.That(commit.CommittedAt, Is.LessThanOrEqualTo(DateTime.UtcNow));
+            Assert.Multiple(() =>
+            {
+                Assert.That(commit.CommitHash, Is.EqualTo("abc123"));
+                Assert.That(commit.Message, Is.EqualTo("Linked commit"));
+                Assert.That(commit.AuthorName, Is.EqualTo("system"));
+                Assert.That(commit.CommittedAt, Is.LessThanOrEqualTo(DateTime.UtcNow));
+            });
         }
 
         [Test]
@@ -91,8 +111,12 @@ namespace TestProject1.Scm.Test
             var ex = Assert.Throws<ArgumentException>(() =>
                 ScmRepository.LinkCommit("   "));
 
-            Assert.That(ex!.ParamName, Is.EqualTo("commitHash"));
-            Assert.That(ex.Message, Does.StartWith("Commit hash is required."));
+            Assert.Multiple(() =>
+            {
+                Assert.That(ex, Is.Not.Null);
+                Assert.That(ex!.ParamName, Is.EqualTo("commitHash"));
+                Assert.That(ex.Message, Does.StartWith("Commit hash is required."));
+            });
         }
     }
 }

@@ -17,11 +17,15 @@ namespace TestProject1.Scm.Test.Providers.Test
 
             var repository = provider.GetRepository("https://github.com/test/repo.git");
 
-            Assert.That(repository, Is.Not.Null);
-            Assert.That(repository.RepositoryId, Is.Not.EqualTo(Guid.Empty));
-            Assert.That(repository.Name, Is.EqualTo("GitHub Repo"));
-            Assert.That(repository.RemoteUrl, Is.EqualTo("https://github.com/test/repo.git"));
-            Assert.That(repository.DefaultBranchName, Is.EqualTo("main"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(repository, Is.Not.Null);
+
+                Assert.That(repository.RepositoryId, Is.Not.EqualTo(Guid.Empty));
+                Assert.That(repository.Name, Is.EqualTo("GitHub Repo"));
+                Assert.That(repository.RemoteUrl, Is.EqualTo("https://github.com/test/repo.git"));
+                Assert.That(repository.DefaultBranchName, Is.EqualTo("main"));
+            });
         }
 
         [Test]
@@ -32,16 +36,20 @@ namespace TestProject1.Scm.Test.Providers.Test
 
             var branches = provider.GetBranches(repository);
 
-            Assert.That(branches, Has.Count.EqualTo(3));
 
-            Assert.That(branches[0].BranchName, Is.EqualTo("main"));
-            Assert.That(branches[0].IsMain, Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(branches, Has.Count.EqualTo(3));
 
-            Assert.That(branches[1].BranchName, Is.EqualTo("develop"));
-            Assert.That(branches[1].IsMain, Is.False);
+                Assert.That(branches[0].BranchName, Is.EqualTo("main"));
+                Assert.That(branches[0].IsMain, Is.True);
 
-            Assert.That(branches[2].BranchName, Is.EqualTo("feature/login"));
-            Assert.That(branches[2].IsMain, Is.False);
+                Assert.That(branches[1].BranchName, Is.EqualTo("develop"));
+                Assert.That(branches[1].IsMain, Is.False);
+
+                Assert.That(branches[2].BranchName, Is.EqualTo("feature/login"));
+                Assert.That(branches[2].IsMain, Is.False);
+            });
         }
 
         [Test]
@@ -54,17 +62,21 @@ namespace TestProject1.Scm.Test.Providers.Test
             var commits = provider.GetCommits(branch);
             var after = DateTime.UtcNow.AddDays(-1).AddSeconds(5);
 
-            Assert.That(commits, Has.Count.EqualTo(2));
 
-            Assert.That(commits[0].CommitHash, Is.Not.Null.And.Not.Empty);
-            Assert.That(commits[0].Message, Is.EqualTo("Initial commit"));
-            Assert.That(commits[0].AuthorName, Is.EqualTo("Alice"));
-            Assert.That(commits[0].CommittedAt, Is.InRange(before, after));
+            Assert.Multiple(() =>
+            {
+                Assert.That(commits, Has.Count.EqualTo(2));
 
-            Assert.That(commits[1].CommitHash, Is.Not.Null.And.Not.Empty);
-            Assert.That(commits[1].Message, Is.EqualTo("Added feature"));
-            Assert.That(commits[1].AuthorName, Is.EqualTo("Bob"));
-            Assert.That(commits[1].CommittedAt, Is.InRange(before, after));
+                Assert.That(commits[0].CommitHash, Is.Not.Null.And.Not.Empty);
+                Assert.That(commits[0].Message, Is.EqualTo("Initial commit"));
+                Assert.That(commits[0].AuthorName, Is.EqualTo("Alice"));
+                Assert.That(commits[0].CommittedAt, Is.InRange(before, after));
+
+                Assert.That(commits[1].CommitHash, Is.Not.Null.And.Not.Empty);
+                Assert.That(commits[1].Message, Is.EqualTo("Added feature"));
+                Assert.That(commits[1].AuthorName, Is.EqualTo("Bob"));
+                Assert.That(commits[1].CommittedAt, Is.InRange(before, after));
+            });
         }
 
         [Test]
@@ -75,8 +87,11 @@ namespace TestProject1.Scm.Test.Providers.Test
 
             var commits = provider.GetCommits(branch);
 
-            Assert.That(commits, Has.Count.EqualTo(2));
-            Assert.That(commits[0].CommitHash, Is.Not.EqualTo(commits[1].CommitHash));
+            Assert.Multiple(() =>
+            {
+                Assert.That(commits, Has.Count.EqualTo(2));
+                Assert.That(commits[0].CommitHash, Is.Not.EqualTo(commits[1].CommitHash));
+            });
         }
     }
 }
