@@ -27,8 +27,11 @@ public class PipelineTests
 
         var ex = Assert.Throws<ArgumentException>(CreatePipeline);
 
-        Assert.That(ex!.ParamName, Is.EqualTo("name"));
-        Assert.That(ex.Message, Does.StartWith("Pipeline name is required."));
+        Assert.Multiple(() =>
+        {
+            Assert.That(ex!.ParamName, Is.EqualTo("name"));
+            Assert.That(ex.Message, Does.StartWith("Pipeline name is required."));
+        });
     }
 
     [Test]
@@ -38,9 +41,13 @@ public class PipelineTests
 
         var ex = Assert.Throws<ArgumentException>(CreatePipeline);
 
-        Assert.That(ex!.ParamName, Is.EqualTo("name"));
-        Assert.That(ex.Message, Does.StartWith("Pipeline name is required."));
+        Assert.Multiple(() =>
+        {
+            Assert.That(ex!.ParamName, Is.EqualTo("name"));
+            Assert.That(ex.Message, Does.StartWith("Pipeline name is required."));
+        });
     }
+    private static readonly string[] expected = new[] { "Sources", "Build", "Deploy" };
 
     [Test]
     public void AddStep_slaat_stappen_op_op_volgorde_van_order()
@@ -54,7 +61,7 @@ public class PipelineTests
         pipeline.AddStep(first);
         pipeline.AddStep(second);
 
-        Assert.That(pipeline.Steps.Select(step => step.Name), Is.EqualTo(new[] { "Sources", "Build", "Deploy" }));
+        Assert.That(pipeline.Steps.Select(step => step.Name), Is.EqualTo(expected));
     }
 
     [Test]

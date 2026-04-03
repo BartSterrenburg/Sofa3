@@ -26,8 +26,11 @@ public class PipelineStepTests
 
         var ex = Assert.Throws<ArgumentException>(CreateStep);
 
-        Assert.That(ex!.ParamName, Is.EqualTo("name"));
-        Assert.That(ex.Message, Does.StartWith("Step name is required."));
+        Assert.Multiple(() =>
+        {
+            Assert.That(ex!.ParamName, Is.EqualTo("name"));
+            Assert.That(ex.Message, Does.StartWith("Step name is required."));
+        });
     }
 
     [Test]
@@ -37,8 +40,11 @@ public class PipelineStepTests
 
         var ex = Assert.Throws<ArgumentException>(CreateStep);
 
-        Assert.That(ex!.ParamName, Is.EqualTo("name"));
-        Assert.That(ex.Message, Does.StartWith("Step name is required."));
+        Assert.Multiple(() =>
+        {
+            Assert.That(ex!.ParamName, Is.EqualTo("name"));
+            Assert.That(ex.Message, Does.StartWith("Step name is required."));
+        });
     }
 
     [Test]
@@ -48,8 +54,11 @@ public class PipelineStepTests
 
         var ex = Assert.Throws<ArgumentOutOfRangeException>(CreateStep);
 
-        Assert.That(ex!.ParamName, Is.EqualTo("order"));
-        Assert.That(ex.Message, Does.StartWith("Order must be zero or greater."));
+        Assert.Multiple(() =>
+        {
+            Assert.That(ex!.ParamName, Is.EqualTo("order"));
+            Assert.That(ex.Message, Does.StartWith("Order must be zero or greater."));
+        });
     }
 
     [Test]

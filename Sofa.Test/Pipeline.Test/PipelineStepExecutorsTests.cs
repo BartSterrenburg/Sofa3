@@ -6,7 +6,7 @@ namespace TestProject1.Pipeline.Test;
 
 public class PipelineStepExecutorsTests
 {
-    public static IEnumerable<TestCaseData> Executors()
+    private static IEnumerable<TestCaseData> Executors()
     {
         yield return new TestCaseData(new SourcesStepExecutor(), PipelineStepType.SOURCES, "Sources step 'Compile sources' executed.")
             .SetName("SourcesStepExecutor_executes_successfully");
