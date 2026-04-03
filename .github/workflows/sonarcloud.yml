@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
       - name: Checkout
@@ -32,9 +34,10 @@ jobs:
           dotnet-sonarscanner begin
           /k:"BartSterrenburg_Sofa3"
           /o:"bartsterrenburg"
-          /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          /d:sonar.token="$SONAR_TOKEN"
           /d:sonar.cs.opencover.reportsPaths="TestResults/**/coverage.opencover.xml"
           /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx"
+
       - name: Build
         run: dotnet build --no-restore --no-incremental
 
@@ -51,4 +54,4 @@ jobs:
       - name: End SonarCloud analysis
         run: >
           dotnet-sonarscanner end
-          /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          /d:sonar.token="$SONAR_TOKEN"
