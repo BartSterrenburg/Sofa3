@@ -16,7 +16,7 @@ namespace Sofa3.Domain.Core
         public string Description { get; private set; }
         public ActivityStatus Status { get; private set; }
 
-        public Activity(string title, string description)
+        public Activity(string title, string? description)
         {
             if (string.IsNullOrWhiteSpace(title))
             {
