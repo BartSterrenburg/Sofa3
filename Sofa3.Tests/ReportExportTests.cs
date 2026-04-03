@@ -11,9 +11,7 @@ public class ReportExportTests
     [Fact]
     public void Factory_returns_pdf_exporter_for_pdf_format()
     {
-        var factory = new ReportExporterFactory();
-
-        var exporter = factory.Create(ExportFormat.PDF);
+        var exporter = ReportExporterFactory.Create(ExportFormat.PDF);
 
         Assert.IsType<PdfReportExporter>(exporter);
     }
@@ -21,9 +19,7 @@ public class ReportExportTests
     [Fact]
     public void Factory_returns_png_exporter_for_png_format()
     {
-        var factory = new ReportExporterFactory();
-
-        var exporter = factory.Create(ExportFormat.PNG);
+        var exporter = ReportExporterFactory.Create(ExportFormat.PNG);
 
         Assert.IsType<PngReportExporter>(exporter);
     }
@@ -66,10 +62,9 @@ public class ReportExportTests
     [Fact]
     public void Report_export_service_uses_factory_and_exporter()
     {
-        var service = new ReportExportService();
         var report = CreateReport();
 
-        var exported = service.Export(report, ExportFormat.PNG);
+        var exported = ReportExportService.Export(report, ExportFormat.PNG);
 
         Assert.Equal("Sprint-1.png", exported.FileName);
         Assert.Equal("image/png", exported.MimeType);

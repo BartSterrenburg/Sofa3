@@ -1,7 +1,6 @@
-using Sofa3.Domain;
-using Sofa3.Domain.Notification;
 using Sofa3.Domain.Notification.DomainEvents;
-using Sofa3.Domain.SprintLifecycle.States;
+using Sofa3.Domain.Core;
+using Sofa3.Domain.Core.SprintStates;
 
 namespace Sofa3.Tests;
 
@@ -39,18 +38,14 @@ public class SprintLifecycleTests
     [Fact]
     public void ReleaseSucceeded_publishes_sprint_released_event()
     {
-        var publisher = new DomainEventPublisher();
-        var observer = new FakeObserver();
-        publisher.Subscribe(observer);
-
-        var sprint = new Sprint(Guid.NewGuid(), "Sprint", publisher);
+        var sprint = CreateSprint();
         sprint.Start();
         sprint.Finish();
         sprint.StartRelease();
 
         sprint.ReleaseSucceeded();
 
-        var evt = Assert.Single(observer.Events);
+        var evt = Assert.Single(sprint.DomainEvents);
         Assert.IsType<SprintReleasedEvent>(evt);
         Assert.IsType<ReleasedSprintState>(sprint.CurrentState);
     }
@@ -75,17 +70,7 @@ public class SprintLifecycleTests
 
     private static Sprint CreateSprint()
     {
-        return new Sprint(Guid.NewGuid(), "Sprint", new DomainEventPublisher());
-    }
-
-    private sealed class FakeObserver : IDomainEventObserver
-    {
-        public List<DomainEvent> Events { get; } = new();
-
-        public void Update(DomainEvent domainEvent)
-        {
-            Events.Add(domainEvent);
-        }
+        return new Sprint(Guid.NewGuid(), "Sprint");
     }
 }
 

@@ -13,6 +13,7 @@ namespace Sofa3.Domain.Core
         public string Name { get; private set; }
         public string Description { get; private set; }
         public DateTime CreatedAt { get; }
+        public Backlog Backlog { get; private set; }
         public List<ProjectMembership> Members { get; private set; } = new();
 
         public Project(string name, string description)
@@ -24,6 +25,7 @@ namespace Sofa3.Domain.Core
             Name = name;
             Description = description ?? string.Empty;
             CreatedAt = DateTime.UtcNow;
+            Backlog = new Backlog(Guid.NewGuid(), "Product Backlog");
         }
 
         public void AddMember(User user, ProjectRole role)
