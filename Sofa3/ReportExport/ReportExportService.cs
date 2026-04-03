@@ -21,7 +21,7 @@ public sealed class ReportExportService
     {
         ArgumentNullException.ThrowIfNull(report);
 
-        var exporter = _factory.Create(format);
+        var exporter = ReportExporterFactory.Create(format);
         return exporter.Export(report);
     }
 }

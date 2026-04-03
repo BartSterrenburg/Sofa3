@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Sofa3.Domain.Core.States;
 using Sofa3.Domain.SprintReport;
+using Sofa3.Domain.Core.SprintStates;
 
 namespace Sofa3.Domain.Core
 {
