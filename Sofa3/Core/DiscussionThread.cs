@@ -1,4 +1,5 @@
-﻿using Sofa3.Domain.Notification.DomainEvents;
+﻿using Sofa3.Domain.Notification;
+using Sofa3.Domain.Notification.DomainEvents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +29,7 @@ namespace Sofa3.Domain.Core
             if (IsClosed)
                 throw new InvalidOperationException("Thread is gesloten.");
 
-            if (message == null)
-                throw new ArgumentNullException(nameof(message));
+            ArgumentNullException.ThrowIfNull(message);
 
             _messages.Add(message);
             AddDomainEvent(new DiscussionMessageAddedEvent(message.Content));

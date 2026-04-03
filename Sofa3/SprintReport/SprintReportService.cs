@@ -5,7 +5,7 @@ namespace Sofa3.Domain.SprintReport;
 
 public sealed class SprintReportService
 {
-    public SprintReport GenerateFor(Sprint sprint, IReportLayoutStrategy layout)
+    public static SprintReport GenerateFor(Sprint sprint, IReportLayoutStrategy layout)
     {
         ArgumentNullException.ThrowIfNull(sprint);
         ArgumentNullException.ThrowIfNull(layout);

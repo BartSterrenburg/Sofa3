@@ -10,7 +10,7 @@ namespace Sofa3.Domain.Pipeline
 {
     public class PipelineStepExecutorFactory
     {
-        public IPipelineStepExecutor Create(PipelineStepType type)
+        public static IPipelineStepExecutor Create(PipelineStepType type)
         {
             return type switch
             {

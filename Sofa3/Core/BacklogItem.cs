@@ -1,4 +1,5 @@
 ﻿using Sofa3.Domain.Core.BacklogItemStates;
+using Sofa3.Domain.Notification;
 using Sofa3.Domain.Notification.DomainEvents;
 using System;
 using System.Collections.Generic;
@@ -42,8 +43,7 @@ namespace Sofa3.Domain.Core
 
         public void AddActivity(Activity activity)
         {
-            if (activity == null)
-                throw new ArgumentNullException(nameof(activity));
+            ArgumentNullException.ThrowIfNull(activity);
 
             _activities.Add(activity);
         }

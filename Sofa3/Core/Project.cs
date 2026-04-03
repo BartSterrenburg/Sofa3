@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sofa3.Domain.Notification;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,13 +28,12 @@ namespace Sofa3.Domain.Core
 
         public void AddMember(User user, ProjectRole role)
         {
-            if (user == null)
-                throw new ArgumentNullException(nameof(user));
+            ArgumentNullException.ThrowIfNull(user);
 
             Members.Add(new ProjectMembership(user.UserId, role));
         }
 
-        public void CreateBacklogItem(string title, string description)
+        public static void CreateBacklogItem(string title, string description)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Backlog item title is required.", nameof(title));
@@ -42,7 +42,7 @@ namespace Sofa3.Domain.Core
             // Geen BacklogItem-object returnen omdat je geen extra uitwerking wilt toevoegen.
         }
 
-        public void CreateSprint(string name, DateOnly startDate, DateOnly endDate)
+        public static void CreateSprint(string name, DateOnly startDate, DateOnly endDate)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Sprint name is required.", nameof(name));

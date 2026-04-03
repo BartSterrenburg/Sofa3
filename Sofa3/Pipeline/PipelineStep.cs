@@ -1,4 +1,5 @@
-﻿using Sofa3.Domain.Pipeline.Enumerations;
+﻿using Sofa3.Domain.Notification;
+using Sofa3.Domain.Pipeline.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,11 +31,10 @@ namespace Sofa3.Domain.Pipeline
 
         public StepExecution Execute(PipelineExecution context)
         {
-            if (context == null)
-                throw new ArgumentNullException(nameof(context));
+            ArgumentNullException.ThrowIfNull(context);
 
             var factory = new PipelineStepExecutorFactory();
-            var executor = factory.Create(Type);
+            var executor = PipelineStepExecutorFactory.Create(Type);
 
             return executor.Execute(this, context);
         }

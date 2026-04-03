@@ -15,10 +15,7 @@ namespace Sofa3.Domain.Core
 
         protected void AddDomainEvent(DomainEvent domainEvent)
         {
-            if (domainEvent == null)
-            {
-                throw new ArgumentNullException(nameof(domainEvent));
-            }
+            ArgumentNullException.ThrowIfNull(domainEvent);
 
             _domainEvents.Add(domainEvent);
         }

@@ -8,16 +8,16 @@ public sealed class ReportExportService
     private readonly ReportExporterFactory _factory;
 
     public ReportExportService()
-        : this(new ReportExporterFactory())
     {
+        _factory = new ReportExporterFactory();
     }
 
-    public ReportExportService(ReportExporterFactory factory)
-    {
-        _factory = factory ?? throw new ArgumentNullException(nameof(factory));
-    }
+    //public ReportExportService(ReportExporterFactory factory)
+    //{
+    //    _factory = factory ?? throw new ArgumentNullException(nameof(factory));
+    //}
 
-    public ExportedReport Export(SprintReportModel report, ExportFormat format)
+    public static ExportedReport Export(SprintReportModel report, ExportFormat format)
     {
         ArgumentNullException.ThrowIfNull(report);
 

@@ -1,4 +1,5 @@
-﻿using Sofa3.Domain.Pipeline.Enumerations;
+﻿using Sofa3.Domain.Notification;
+using Sofa3.Domain.Pipeline.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,8 +33,7 @@ namespace Sofa3.Domain.Pipeline
 
         public void AddStep(PipelineStep step)
         {
-            if (step == null)
-                throw new ArgumentNullException(nameof(step));
+            ArgumentNullException.ThrowIfNull(step);
 
             if (_steps.Any(s => s.Order == step.Order))
                 throw new InvalidOperationException($"A step with order {step.Order} already exists.");

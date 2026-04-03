@@ -8,24 +8,25 @@ namespace Sofa3.Domain.Core.BacklogItemStates
 {
     public class DoneState : IBacklogItemState
     {
+        private static String exceptionMessage = "Done is the endstatus.";
         public void MoveToDoing(BacklogItem item)
         {
-            throw new InvalidOperationException("Done is een eindstatus.");
+            throw new InvalidOperationException(exceptionMessage);
         }
 
         public void MoveToReadyForTesting(BacklogItem item)
         {
-            throw new InvalidOperationException("Done is een eindstatus.");
+            throw new InvalidOperationException(exceptionMessage);
         }
 
         public void MoveToTesting(BacklogItem item)
         {
-            throw new InvalidOperationException("Done is een eindstatus.");
+            throw new InvalidOperationException(exceptionMessage);
         }
 
         public void MoveToTested(BacklogItem item)
         {
-            throw new InvalidOperationException("Done is een eindstatus.");
+            throw new InvalidOperationException(exceptionMessage);
         }
 
         public void MoveToDone(BacklogItem item)

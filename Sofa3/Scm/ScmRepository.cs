@@ -35,7 +35,7 @@ namespace Sofa3.Domain.Scm
             return new Branch(branchName, branchName == DefaultBranchName);
         }
 
-        public Commit LinkCommit(string commitHash)
+        public static Commit LinkCommit(string commitHash)
         {
             if (string.IsNullOrWhiteSpace(commitHash))
                 throw new ArgumentException("Commit hash is required.", nameof(commitHash));
