@@ -1,5 +1,4 @@
 namespace Sofa3.Domain.Core.SprintStates;
-
 public sealed class ActiveSprintState : SprintStateBase
 {
     public override string Name => "Active";
