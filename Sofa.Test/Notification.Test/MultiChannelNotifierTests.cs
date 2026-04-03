@@ -1,54 +1,42 @@
-using NotificationModel = Sofa3.Domain.Notification.Notification;
+using Moq;
 using Sofa3.Domain.Notification;
+using NotificationModel = Sofa3.Domain.Notification.Notification;
 
-namespace TestProject1.Notification.Test;
-
-public class MultiChannelNotifierTests
+namespace TestProject1.Notification.Test
 {
-    private sealed class RecordingChannel : INotificationChannel
+    [TestFixture]
+    public class MultiChannelNotifierTests
     {
-        public List<NotificationModel> Notifications { get; } = new();
-
-        public void Send(NotificationModel notification)
+        [Test]
+        public void Send_stuurt_notification_naar_alle_kanalen()
         {
-            Notifications.Add(notification);
+            var notifier = new MultiChannelNotifier();
+            var firstChannelMock = new Mock<INotificationChannel>();
+            var secondChannelMock = new Mock<INotificationChannel>();
+            var notification = new NotificationModel("Subject", "Message");
+
+            notifier.AddChannel(firstChannelMock.Object);
+            notifier.AddChannel(secondChannelMock.Object);
+
+            notifier.Send(notification);
+
+            firstChannelMock.Verify(c => c.Send(notification), Times.Once);
+            secondChannelMock.Verify(c => c.Send(notification), Times.Once);
+        }
+
+        [Test]
+        public void RemoveChannel_stopt_verzending_naar_datzelfde_kanaal()
+        {
+            var notifier = new MultiChannelNotifier();
+            var channelMock = new Mock<INotificationChannel>();
+            var notification = new NotificationModel("Subject", "Message");
+
+            notifier.AddChannel(channelMock.Object);
+            notifier.RemoveChannel(channelMock.Object);
+
+            notifier.Send(notification);
+
+            channelMock.Verify(c => c.Send(It.IsAny<NotificationModel>()), Times.Never);
         }
     }
-
-    [Test]
-    public void Send_stuurt_notification_naar_alle_kanalen()
-    {
-        var notifier = new MultiChannelNotifier();
-        var firstChannel = new RecordingChannel();
-        var secondChannel = new RecordingChannel();
-        var notification = new NotificationModel("Subject", "Message");
-
-        notifier.AddChannel(firstChannel);
-        notifier.AddChannel(secondChannel);
-        notifier.Send(notification);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(firstChannel.Notifications, Has.Count.EqualTo(1));
-            Assert.That(secondChannel.Notifications, Has.Count.EqualTo(1));
-            Assert.That(firstChannel.Notifications[0], Is.SameAs(notification));
-            Assert.That(secondChannel.Notifications[0], Is.SameAs(notification));
-        });
-    }
-
-    [Test]
-    public void RemoveChannel_stopt_verzending_naar_datzelfde_kanaal()
-    {
-        var notifier = new MultiChannelNotifier();
-        var channel = new RecordingChannel();
-        var notification = new NotificationModel("Subject", "Message");
-
-        notifier.AddChannel(channel);
-        notifier.RemoveChannel(channel);
-        notifier.Send(notification);
-
-        Assert.That(channel.Notifications, Is.Empty);
-    }
 }
-
-
