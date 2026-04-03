@@ -2,7 +2,7 @@ using Sofa3.Domain.Core;
 
 namespace TestProject1.FR_001;
 
-public class ProjectCreationTests
+public class Fr001
 {
     [Test]
     public void Project_wordt_succesvol_aangemaakt_met_geldige_naam()
