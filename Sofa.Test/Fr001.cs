@@ -1,6 +1,6 @@
 using Sofa3.Domain.Core;
 
-namespace TestProject1.FR_001;
+namespace TestProject1;
 
 public class Fr001
 {
