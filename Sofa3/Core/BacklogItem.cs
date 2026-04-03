@@ -12,6 +12,8 @@ namespace Sofa3.Domain.Core
     public class BacklogItem : AggregateRoot
     {
         public Guid BacklogItemId { get; private set; }
+        public Guid ProjectId { get; private set; }
+        public Guid? SprintId { get; private set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
         public int StoryPoints { get; private set; }
@@ -26,9 +28,17 @@ namespace Sofa3.Domain.Core
 
         public IBacklogItemState State { get; private set; }
 
-        public BacklogItem(string title, string description, int storyPoints, IBacklogItemState initialState)
+        public BacklogItem(Guid projectId, string title, string description, int storyPoints, IBacklogItemState initialState)
         {
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                throw new ArgumentException("Backlog item title is required.", nameof(title));
+            }
+
+            ArgumentNullException.ThrowIfNull(initialState);
+
             BacklogItemId = Guid.NewGuid();
+            ProjectId = projectId;
             Title = title;
             Description = description;
             StoryPoints = storyPoints;
@@ -45,6 +55,8 @@ namespace Sofa3.Domain.Core
         {
             ArgumentNullException.ThrowIfNull(activity);
 
+            activity.LinkToBacklogItem(BacklogItemId);
+
             _activities.Add(activity);
         }
 
@@ -53,6 +65,16 @@ namespace Sofa3.Domain.Core
             // In UML staat starter: User, maar die klasse staat niet in de foto.
             var thread = new DiscussionThread(subject);
             _discussionThreads.Add(thread);
+        }
+
+        internal void LinkToSprint(Guid sprintId)
+        {
+            if (SprintId.HasValue && SprintId.Value != sprintId)
+            {
+                throw new InvalidOperationException("Backlog item already belongs to a different sprint.");
+            }
+
+            SprintId = sprintId;
         }
 
         public void MoveTo(IBacklogItemState state)

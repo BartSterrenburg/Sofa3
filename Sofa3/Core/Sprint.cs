@@ -7,21 +7,30 @@ using System.Text;
 using System.Threading.Tasks;
 using Sofa3.Domain.SprintReport;
 using Sofa3.Domain.Core.SprintStates;
+using Sofa3.Domain.Core.BacklogItemStates;
 
 namespace Sofa3.Domain.Core
 {
     public class Sprint : AggregateRoot
     {
         private readonly List<SprintReviewDocument> _reviewDocuments = new();
+        private readonly List<BacklogItem> _backlogItems = new();
 
         public Guid SprintId { get; private set; }
+        public Guid ProjectId { get; private set; }
         public string Name { get; private set; }
         public DateOnly StartDate { get; private set; }
         public DateOnly EndDate { get; private set; }
         public ISprintState CurrentState { get; private set; }
+        public IReadOnlyCollection<BacklogItem> BacklogItems => _backlogItems.AsReadOnly();
 
 
         public Sprint(Guid sprintId, string name, DateOnly startDate, DateOnly endDate)
+            : this(sprintId, Guid.Empty, name, startDate, endDate)
+        {
+        }
+
+        public Sprint(Guid sprintId, Guid projectId, string name, DateOnly startDate, DateOnly endDate)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -34,6 +43,7 @@ namespace Sofa3.Domain.Core
             }
 
             SprintId = sprintId;
+            ProjectId = projectId;
             Name = name;
             StartDate = startDate;
             EndDate = endDate;
@@ -43,6 +53,16 @@ namespace Sofa3.Domain.Core
         public Sprint(Guid sprintId, string name)
             : this(
                 sprintId,
+                name,
+                DateOnly.FromDateTime(DateTime.UtcNow),
+                DateOnly.FromDateTime(DateTime.UtcNow.AddDays(14)))
+        {
+        }
+
+        public Sprint(Guid sprintId, Guid projectId, string name)
+            : this(
+                sprintId,
+                projectId,
                 name,
                 DateOnly.FromDateTime(DateTime.UtcNow),
                 DateOnly.FromDateTime(DateTime.UtcNow.AddDays(14)))
@@ -99,6 +119,29 @@ namespace Sofa3.Domain.Core
             var document = new SprintReviewDocument(Guid.NewGuid(), fileName, uploadedAt ?? DateTime.UtcNow);
             _reviewDocuments.Add(document);
             return document;
+        }
+
+        public void AddBacklogItem(BacklogItem item)
+        {
+            ArgumentNullException.ThrowIfNull(item);
+
+            if (ProjectId == Guid.Empty)
+            {
+                throw new InvalidOperationException("Sprint must be linked to a project before backlog items can be added.");
+            }
+
+            if (item.ProjectId != ProjectId)
+            {
+                throw new InvalidOperationException("Backlog item belongs to a different project.");
+            }
+
+            item.LinkToSprint(SprintId);
+            item.MoveTo(new ToDoState());
+
+            if (_backlogItems.All(existing => existing.BacklogItemId != item.BacklogItemId))
+            {
+                _backlogItems.Add(item);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Sofa3.Domain.Notification;
+using Sofa3.Domain.Core.BacklogItemStates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Sofa3.Domain.Core
             Name = name;
             Description = description ?? string.Empty;
             CreatedAt = DateTime.UtcNow;
-            Backlog = new Backlog(Guid.NewGuid(), "Product Backlog");
+            Backlog = new Backlog(Guid.NewGuid(), ProjectId, "Product Backlog");
         }
 
         public void AddMember(User user, ProjectRole role)
@@ -35,13 +36,14 @@ namespace Sofa3.Domain.Core
             Members.Add(new ProjectMembership(user.UserId, role));
         }
 
-        public static void CreateBacklogItem(string title, string description)
+        public BacklogItem CreateBacklogItem(string title, string description)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Backlog item title is required.", nameof(title));
 
-            // Aanmaaklogica komt hier.
-            // Geen BacklogItem-object returnen omdat je geen extra uitwerking wilt toevoegen.
+            var item = new BacklogItem(ProjectId, title, description ?? string.Empty, 0, new ToDoState());
+            Backlog.AddItem(item);
+            return item;
         }
 
         public static void CreateSprint(string name, DateOnly startDate, DateOnly endDate)
