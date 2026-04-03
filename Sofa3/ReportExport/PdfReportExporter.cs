@@ -14,7 +14,7 @@ public sealed class PdfReportExporter : IReportExporter
         ArgumentNullException.ThrowIfNull(report);
 
         var data = BuildPdf(report);
-        var fileName = BuildFileName(report.SprintName, "pdf");
+        var fileName = ReportExportFileNameHelper.BuildFileName(report.SprintName, "pdf");
         return new ExportedReport(fileName, "application/pdf", data);
     }
 
@@ -120,32 +120,6 @@ public sealed class PdfReportExporter : IReportExporter
         return builder.ToString();
     }
 
-    private static string BuildFileName(string sprintName, string extension)
-    {
-        var baseName = SanitizeFileName(string.IsNullOrWhiteSpace(sprintName) ? "sprint-report" : sprintName);
-        return $"{baseName}.{extension}";
-    }
-
-    private static string SanitizeFileName(string value)
-    {
-        var invalidChars = Path.GetInvalidFileNameChars();
-        var builder = new StringBuilder(value.Length);
-
-        foreach (var ch in value)
-        {
-            if (Array.IndexOf(invalidChars, ch) >= 0 || char.IsWhiteSpace(ch))
-            {
-                builder.Append('-');
-            }
-            else
-            {
-                builder.Append(ch);
-            }
-        }
-
-        var sanitized = builder.ToString().Trim('-', '.');
-        return string.IsNullOrWhiteSpace(sanitized) ? "sprint-report" : sanitized;
-    }
 
     private static void WriteAscii(Stream stream, string value)
     {
