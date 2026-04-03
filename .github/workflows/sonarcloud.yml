@@ -23,42 +23,38 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Install SonarScanner
-        run: dotnet tool install --global dotnet-sonarscanner
+      - name: Install SonarScanner and dotnet-coverage
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
+          dotnet tool install --global dotnet-coverage
 
       - name: Restore
         run: dotnet restore
 
       - name: Begin SonarCloud analysis
-        run: >
-          ~/.dotnet/tools/dotnet-sonarscanner begin
-          /k:"BartSterrenburg_Sofa3"
-          /o:"bartsterrenburg"
-          /d:sonar.token="${SONAR_TOKEN}"
-          /d:sonar.cs.opencover.reportsPaths="TestResults/**/coverage.opencover.xml"
-          /d:sonar.cs.vstest.reportsPaths="TestResults/**/*.trx"
+        run: |
+          ~/.dotnet/tools/dotnet-sonarscanner begin \
+            /k:"BartSterrenburg_Sofa3" \
+            /o:"bartsterrenburg" \
+            /d:sonar.token="${SONAR_TOKEN}" \
+            /d:sonar.cs.vscoveragexml.reportsPaths="coverage.xml"
 
       - name: Build
         run: dotnet build --no-restore --no-incremental
 
-      - name: Test with coverage
-        run: >
-          dotnet test
-          --no-build
-          --logger "trx;LogFileName=test-results.trx"
-          --results-directory TestResults
-          /p:CollectCoverage=true
-          /p:CoverletOutputFormat=opencover
-          /p:CoverletOutput=TestResults/
-
-      - name: Show generated test and coverage files
+      - name: Test with dotnet-coverage
         run: |
-          echo "TRX files:"
-          find TestResults -type f -name "*.trx" || true
-          echo "Coverage files:"
-          find TestResults -type f \( -name "coverage.opencover.xml" -o -name "*.xml" \) || true
+          ~/.dotnet/tools/dotnet-coverage collect "dotnet test --no-build" \
+            -f xml \
+            -o "coverage.xml"
+
+      - name: Verify coverage file
+        run: |
+          ls -la
+          test -f coverage.xml
+          echo "coverage.xml found"
 
       - name: End SonarCloud analysis
-        run: >
-          ~/.dotnet/tools/dotnet-sonarscanner end
-          /d:sonar.token="${SONAR_TOKEN}"
+        run: |
+          ~/.dotnet/tools/dotnet-sonarscanner end \
+            /d:sonar.token="${SONAR_TOKEN}"
