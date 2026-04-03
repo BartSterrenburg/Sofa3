@@ -5,17 +5,10 @@ namespace Sofa3.Domain.ReportExport;
 
 public sealed class ReportExportService
 {
-    private readonly ReportExporterFactory _factory;
-
     public ReportExportService()
     {
-        _factory = new ReportExporterFactory();
     }
 
-    //public ReportExportService(ReportExporterFactory factory)
-    //{
-    //    _factory = factory ?? throw new ArgumentNullException(nameof(factory));
-    //}
 
     public static ExportedReport Export(SprintReportModel report, ExportFormat format)
     {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Sofa3.Domain.Pipeline
 {
-    public class PipelineStepExecutorFactory
+    public static class PipelineStepExecutorFactory
     {
         public static IPipelineStepExecutor Create(PipelineStepType type)
         {

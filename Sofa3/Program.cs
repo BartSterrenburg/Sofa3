@@ -10,10 +10,11 @@ using Sofa3.Domain.Core;
 using Sofa3.Domain.Core.BacklogItemStates;
 
 namespace Sofa3.Domain;
-public class Program
+public static class Program
 {
     public static void Main(string[] args)
-    { 
+    {
+        // To be implemented
     }
 }
 

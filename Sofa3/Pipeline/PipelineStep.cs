@@ -33,7 +33,6 @@ namespace Sofa3.Domain.Pipeline
         {
             ArgumentNullException.ThrowIfNull(context);
 
-            var factory = new PipelineStepExecutorFactory();
             var executor = PipelineStepExecutorFactory.Create(Type);
 
             return executor.Execute(this, context);
