@@ -11,36 +11,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
-    - name: Restore
-      run: dotnet restore
+      - name: Install SonarScanner
+        run: dotnet tool install --global dotnet-sonarscanner
 
-    - name: Build
-      run: dotnet build --no-restore
+      - name: Restore
+        run: dotnet restore
 
-    - name: Test with coverage
-      run: >
-        dotnet test
-        --no-build
-        --collect:"XPlat Code Coverage"
-        --results-directory ./TestResults
+      - name: Begin SonarCloud analysis
+        run: >
+          dotnet-sonarscanner begin
+          /k:"BartSterrenburg_Sofa3"
+          /o:"bartsterrenburg"
+          /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          /d:sonar.cs.opencover.reportsPaths="TestResults/**/coverage.opencover.xml"
+          /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx"
+      - name: Build
+        run: dotnet build --no-restore --no-incremental
 
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@v2
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      with:
-        args: >
-          -Dsonar.projectKey=BartSterrenburg_Sofa3
-          -Dsonar.organization=bartsterrenburg
-          -Dsonar.cs.opencover.reportsPaths=TestResults/**/coverage.opencover.xml
-          -Dsonar.cs.vstest.reportsPaths=TestResults/*.trx
+      - name: Test with OpenCover coverage
+        run: >
+          dotnet test
+          --no-build
+          --logger "trx;LogFileName=test-results.trx"
+          --results-directory TestResults
+          /p:CollectCoverage=true
+          /p:CoverletOutput=TestResults/
+          /p:CoverletOutputFormat=opencover
+
+      - name: End SonarCloud analysis
+        run: >
+          dotnet-sonarscanner end
+          /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
