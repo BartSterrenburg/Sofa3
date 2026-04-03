@@ -4,7 +4,7 @@ using Sofa3.Domain.ReportExport;
 
 namespace Sofa3.Domain.ReportExport;
 
-public static class ReportExporterFactory
+public class ReportExporterFactory
 {
     public static IReportExporter Create(ExportFormat format)
     {
