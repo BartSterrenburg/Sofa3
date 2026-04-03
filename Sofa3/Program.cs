@@ -3,7 +3,6 @@
 using Sofa3.Domain.Notification.Channels;
 using Sofa3.Domain.Notification.NotificationObservers;
 using Sofa3.Domain.Notification;
-using Sofa3.Domain.Pipeline;
 using Sofa3.Domain.Pipeline.Enumerations;
 using Sofa3.Domain.Scm.Providers;
 using Sofa3.Domain.Scm;
@@ -116,57 +115,8 @@ public class Program
         Console.WriteLine($"- Einde: {sprint.EndDate}");
         Console.WriteLine();
 
-        // Pipeline aanmaken
-        var pipeline = new Pipeline(
-            "CI Pipeline",
-            PipelineTriggerMode.AUTOMATIC
-        );
 
-        Console.WriteLine("Pipeline aangemaakt:");
-        Console.WriteLine($"- Id: {pipeline.PipelineId}");
-        Console.WriteLine($"- Naam: {pipeline.Name}");
-        Console.WriteLine($"- TriggerMode: {pipeline.TriggerMode}");
-        Console.WriteLine();
 
-        // Steps toevoegen
-        pipeline.AddStep(new PipelineStep("Checkout Sources", 1, PipelineStepType.SOURCES));
-        pipeline.AddStep(new PipelineStep("Create Package", 2, PipelineStepType.PACKAGE));
-        pipeline.AddStep(new PipelineStep("Build Application", 3, PipelineStepType.BUILD));
-        pipeline.AddStep(new PipelineStep("Run Tests", 4, PipelineStepType.TEST));
-        pipeline.AddStep(new PipelineStep("Static Analysis", 5, PipelineStepType.ANALYSE));
-        pipeline.AddStep(new PipelineStep("Deploy to Test", 6, PipelineStepType.DEPLOY));
-        pipeline.AddStep(new PipelineStep("Cleanup Utility", 7, PipelineStepType.UTILITY));
-
-        Console.WriteLine("Pipeline steps:");
-        foreach (var step in pipeline.Steps)
-        {
-            Console.WriteLine($"- [{step.Order}] {step.Name} ({step.Type})");
-        }
-
-        Console.WriteLine();
-        Console.WriteLine("Pipeline wordt uitgevoerd...");
-        Console.WriteLine();
-
-        // Execution starten
-        var execution = pipeline.CreateExecution();
-
-        Console.WriteLine("Pipeline execution resultaat:");
-        Console.WriteLine($"- ExecutionId: {execution.ExecutionId}");
-        Console.WriteLine($"- StartedAt: {execution.StartedAt}");
-        Console.WriteLine($"- FinishedAt: {execution.FinishedAt}");
-        Console.WriteLine($"- Status: {execution.Status}");
-        Console.WriteLine();
-
-        Console.WriteLine("Step executions:");
-        foreach (var stepExecution in execution.StepExecutions)
-        {
-            Console.WriteLine($"- StepExecutionId: {stepExecution.StepExecutionId}");
-            Console.WriteLine($"  StartedAt: {stepExecution.StartedAt}");
-            Console.WriteLine($"  FinishedAt: {stepExecution.FinishedAt}");
-            Console.WriteLine($"  Status: {stepExecution.Status}");
-            Console.WriteLine($"  Log: {stepExecution.LogMessage}");
-            Console.WriteLine();
-        }
 
         Console.WriteLine("Demo afgerond.");
         Console.ReadLine();
