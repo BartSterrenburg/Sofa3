@@ -31,27 +31,34 @@ jobs:
 
       - name: Begin SonarCloud analysis
         run: >
-          dotnet-sonarscanner begin
+          ~/.dotnet/tools/dotnet-sonarscanner begin
           /k:"BartSterrenburg_Sofa3"
           /o:"bartsterrenburg"
-          /d:sonar.token="$SONAR_TOKEN"
+          /d:sonar.token="${SONAR_TOKEN}"
           /d:sonar.cs.opencover.reportsPaths="TestResults/**/coverage.opencover.xml"
-          /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx"
+          /d:sonar.cs.vstest.reportsPaths="TestResults/**/*.trx"
 
       - name: Build
         run: dotnet build --no-restore --no-incremental
 
-      - name: Test with OpenCover coverage
+      - name: Test with coverage
         run: >
           dotnet test
           --no-build
           --logger "trx;LogFileName=test-results.trx"
           --results-directory TestResults
           /p:CollectCoverage=true
-          /p:CoverletOutput=TestResults/
           /p:CoverletOutputFormat=opencover
+          /p:CoverletOutput=TestResults/
+
+      - name: Show generated test and coverage files
+        run: |
+          echo "TRX files:"
+          find TestResults -type f -name "*.trx" || true
+          echo "Coverage files:"
+          find TestResults -type f \( -name "coverage.opencover.xml" -o -name "*.xml" \) || true
 
       - name: End SonarCloud analysis
         run: >
-          dotnet-sonarscanner end
-          /d:sonar.token="$SONAR_TOKEN"
+          ~/.dotnet/tools/dotnet-sonarscanner end
+          /d:sonar.token="${SONAR_TOKEN}"
