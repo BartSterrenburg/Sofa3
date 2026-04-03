@@ -16,7 +16,7 @@ namespace TestProject1.Core.Test
             Assert.Multiple(() =>
             {
                 Assert.That(aggregate.DomainEvents, Is.Not.Null);
-                Assert.That(aggregate.DomainEvents.Count, Is.EqualTo(0));
+                Assert.That(aggregate.DomainEvents, Has.Count.EqualTo(0));
             });
         }
 
@@ -30,8 +30,8 @@ namespace TestProject1.Core.Test
 
             Assert.Multiple(() =>
             {
-                Assert.That(aggregate.DomainEvents.Count, Is.EqualTo(1));
-                Assert.That(aggregate.DomainEvents, Contains.Item(domainEvent));
+                Assert.That(aggregate.DomainEvents, Has.Count.EqualTo(1));
+                Assert.That(aggregate.DomainEvents, Does.Contain(domainEvent));
             });
         }
 
@@ -59,7 +59,7 @@ namespace TestProject1.Core.Test
 
             Assert.Multiple(() =>
             {
-                Assert.That(aggregate.DomainEvents.Count, Is.EqualTo(0));
+                Assert.That(aggregate.DomainEvents, Has.Count.EqualTo(0));
             });
         }
 

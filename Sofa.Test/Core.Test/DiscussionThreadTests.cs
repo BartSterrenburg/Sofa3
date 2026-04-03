@@ -22,8 +22,8 @@ namespace TestProject1.Core.Test
                 Assert.That(thread.Subject, Is.EqualTo(subject));
                 Assert.That(thread.IsClosed, Is.False);
                 Assert.That(thread.Messages, Is.Not.Null);
-                Assert.That(thread.Messages.Count, Is.EqualTo(0));
-                Assert.That(thread.DomainEvents.Count, Is.EqualTo(0));
+                Assert.That(thread.Messages, Has.Count.EqualTo(0));
+                Assert.That(thread.DomainEvents, Has.Count.EqualTo(0));
             });
         }
 
@@ -37,7 +37,7 @@ namespace TestProject1.Core.Test
 
             Assert.Multiple(() =>
             {
-                Assert.That(thread.Messages.Count, Is.EqualTo(1));
+                Assert.That(thread.Messages, Has.Count.EqualTo(1));
                 Assert.That(thread.Messages.First(), Is.EqualTo(message));
             });
         }
@@ -52,7 +52,7 @@ namespace TestProject1.Core.Test
 
             Assert.Multiple(() =>
             {
-                Assert.That(thread.DomainEvents.Count, Is.EqualTo(1));
+                Assert.That(thread.DomainEvents, Has.Count.EqualTo(1));
                 Assert.That(thread.DomainEvents.First(), Is.TypeOf<DiscussionMessageAddedEvent>());
             });
         }
@@ -128,7 +128,7 @@ namespace TestProject1.Core.Test
 
             Assert.Multiple(() =>
             {
-                Assert.That(thread.Messages.Count, Is.EqualTo(1));
+                Assert.That(thread.Messages, Has.Count.EqualTo(1));
                 Assert.That(thread.Messages.First(), Is.EqualTo(message));
             });
         }
