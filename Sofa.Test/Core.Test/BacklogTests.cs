@@ -23,7 +23,7 @@ namespace TestProject1.Core.Test
                 Assert.That(backlog.ProjectId, Is.EqualTo(projectId));
                 Assert.That(backlog.Name, Is.EqualTo(name));
                 Assert.That(backlog.Items, Is.Not.Null);
-                Assert.That(backlog.Items.Count, Is.EqualTo(0));
+                Assert.That(backlog.Items, Has.Count.EqualTo(0));
             });
         }
 
@@ -86,7 +86,7 @@ namespace TestProject1.Core.Test
 
             Assert.Multiple(() =>
             {
-                Assert.That(backlog.Items.Count, Is.EqualTo(1));
+                Assert.That(backlog.Items, Has.Count.EqualTo(1));
                 Assert.That(backlog.Items, Contains.Item(item));
             });
         }
@@ -115,12 +115,11 @@ namespace TestProject1.Core.Test
             var item = CreateBacklogItem(projectId);
 
             backlog.AddItem(item);
-
             backlog.RemoveItem(item.BacklogItemId);
 
             Assert.Multiple(() =>
             {
-                Assert.That(backlog.Items.Count, Is.EqualTo(0));
+                Assert.That(backlog.Items, Has.Count.EqualTo(0));
                 Assert.That(backlog.Items, Does.Not.Contain(item));
             });
         }
@@ -134,12 +133,11 @@ namespace TestProject1.Core.Test
             backlog.AddItem(item);
 
             var nonExistingId = Guid.NewGuid();
-
             backlog.RemoveItem(nonExistingId);
 
             Assert.Multiple(() =>
             {
-                Assert.That(backlog.Items.Count, Is.EqualTo(1));
+                Assert.That(backlog.Items, Has.Count.EqualTo(1));
                 Assert.That(backlog.Items, Contains.Item(item));
             });
         }

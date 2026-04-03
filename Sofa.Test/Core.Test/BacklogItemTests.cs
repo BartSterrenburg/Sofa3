@@ -3,7 +3,7 @@ using Sofa3.Domain.Core;
 using Sofa3.Domain.Notification.DomainEvents;
 using System;
 using System.Linq;
-using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace TestProject1.Core.Test
 {
@@ -29,8 +29,8 @@ namespace TestProject1.Core.Test
                 Assert.That(item.IsLocked, Is.False);
                 Assert.That(item.State, Is.EqualTo(initialState));
                 Assert.That(item.Owner, Is.Null);
-                Assert.That(item.Activities.Count, Is.EqualTo(0));
-                Assert.That(item.DiscussionThreads.Count, Is.EqualTo(0));
+                Assert.That(item.Activities, Has.Count.EqualTo(0));
+                Assert.That(item.DiscussionThreads, Has.Count.EqualTo(0));
             });
         }
 
@@ -121,8 +121,8 @@ namespace TestProject1.Core.Test
 
             Assert.Multiple(() =>
             {
-                Assert.That(item.Activities.Count, Is.EqualTo(1));
-                Assert.That(item.Activities.First(), Is.EqualTo(activity));
+                Assert.That(item.Activities, Has.Count.EqualTo(1));
+                Assert.That(item.Activities, Does.Contain(activity));
                 Assert.That(activity.BacklogItemId, Is.EqualTo(item.BacklogItemId));
             });
         }
@@ -136,7 +136,7 @@ namespace TestProject1.Core.Test
 
             Assert.Multiple(() =>
             {
-                Assert.That(item.DiscussionThreads.Count, Is.EqualTo(1));
+                Assert.That(item.DiscussionThreads, Has.Count.EqualTo(1));
                 Assert.That(item.DiscussionThreads.First().Subject, Is.EqualTo("API design discussion"));
             });
         }
@@ -163,9 +163,10 @@ namespace TestProject1.Core.Test
 
             item.CallLinkToSprint(sprintId);
 
+            Assert.DoesNotThrow(() => item.CallLinkToSprint(sprintId));
+
             Assert.Multiple(() =>
             {
-                Assert.DoesNotThrow(() => item.CallLinkToSprint(sprintId));
                 Assert.That(item.SprintId, Is.EqualTo(sprintId));
             });
         }
@@ -200,7 +201,7 @@ namespace TestProject1.Core.Test
             Assert.Multiple(() =>
             {
                 Assert.That(item.State, Is.EqualTo(newState));
-                Assert.That(item.DomainEvents.Count, Is.EqualTo(0));
+                Assert.That(item.DomainEvents, Has.Count.EqualTo(0));
             });
         }
 
@@ -215,7 +216,7 @@ namespace TestProject1.Core.Test
             Assert.Multiple(() =>
             {
                 Assert.That(item.State, Is.EqualTo(toDoState));
-                Assert.That(item.DomainEvents.Count, Is.EqualTo(1));
+                Assert.That(item.DomainEvents, Has.Count.EqualTo(1));
                 Assert.That(item.DomainEvents.First(), Is.TypeOf<BacklogItemReturnedToToDoEvent>());
             });
         }
@@ -230,7 +231,7 @@ namespace TestProject1.Core.Test
                 CreateState());
         }
 
-        private static IBacklogItemState CreateState()
+        private static FakeBacklogItemState CreateState()
         {
             return new FakeBacklogItemState();
         }

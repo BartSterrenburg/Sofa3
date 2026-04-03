@@ -84,7 +84,7 @@ namespace TestProject1.Core.Test
 
             Assert.Multiple(() =>
             {
-                Assert.That(project.Members.Count, Is.EqualTo(1));
+                Assert.That(project.Members, Has.Count.EqualTo(1));
                 Assert.That(project.Members[0].UserId, Is.EqualTo(user.UserId));
                 Assert.That(project.Members[0].Role, Is.EqualTo(role));
             });

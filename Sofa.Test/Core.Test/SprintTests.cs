@@ -309,8 +309,8 @@ namespace TestProject1.Core.Test
 
             Assert.Multiple(() =>
             {
-                Assert.That(sprint.BacklogItems.Count, Is.EqualTo(1));
-                Assert.That(sprint.BacklogItems.Contains(item), Is.True);
+                Assert.That(sprint.BacklogItems, Has.Count.EqualTo(1));
+                Assert.That(sprint.BacklogItems, Does.Contain(item));
             });
         }
 
@@ -324,7 +324,7 @@ namespace TestProject1.Core.Test
             sprint.AddBacklogItem(item);
             sprint.AddBacklogItem(item);
 
-            Assert.That(sprint.BacklogItems.Count, Is.EqualTo(1));
+            Assert.That(sprint.BacklogItems, Has.Count.EqualTo(1));
         }
 
         private static Sprint CreateSprint(Guid? sprintId = null, Guid? projectId = null)
