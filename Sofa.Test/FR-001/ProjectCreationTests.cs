@@ -1,6 +1,6 @@
 using Sofa3.Domain.Core;
 
-namespace TestProject1.FR001;
+namespace TestProject1.FR_001;
 
 public class ProjectCreationTests
 {
