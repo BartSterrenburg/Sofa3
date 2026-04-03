@@ -5,7 +5,7 @@ namespace Sofa3.Domain.ReportExport;
 
 public sealed class ReportExportService
 {
-    public ReportExportService()
+    private ReportExportService()
     {
     }
 
